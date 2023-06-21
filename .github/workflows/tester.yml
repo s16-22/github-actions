@@ -1,6 +1,8 @@
 name: "Autodeploy React Copyservice"
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 jobs:
   Build:
     runs-on: ubuntu-20.04

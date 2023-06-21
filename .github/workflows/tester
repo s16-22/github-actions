@@ -1,0 +1,22 @@
+name: "Autodeploy React Copyservice"
+on:
+  workflow_dispatch:
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /usr/local/bin/copyservice/frontend
+            git pull https://ITPrimeCore:${{ secrets.TOKEN }}@github.com/ITPrimeCore/copyservice_frontend.git
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm i
+            npm run build
+            systemctl restart nginx
